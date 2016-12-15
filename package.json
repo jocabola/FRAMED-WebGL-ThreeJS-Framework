@@ -1,0 +1,40 @@
+{
+  "name": "FRAMED-webgl-threejs-framework",
+  "version": "0.1.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "start": "budo -p 9999 -o --dir public/ src/main.coffee:assets/js/main.js --live -- -t coffeeify -t glslify | garnish",
+    "libs": "mkdirp public/assets/js && browserify src/libs-main.js | uglifyjs -cm > public/assets/js/libs.js",
+    "compile": "mkdirp public/assets/js && browserify -t coffeeify -t glslify src/main.coffee | uglifyjs -cm > public/assets/js/main.js",
+    "deploy": "npm run-script libs && npm run-script compile && node deploy.js",
+    "build": "npm run-script app-libs && npm run-script deploy && node build.js",
+    "run": "npm run-script compile && electron public/main.js",
+    "app-libs": "npm install --prefix public"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": {
+    "name": "Jocabola"
+  },
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "browserify": "",
+    "coffee-script": "",
+    "coffeeify": "",
+    "glslify": "5.1.0",
+    "watchify": "",
+    "uglifyjs": "",
+    "budo": "",
+    "garnish": "",
+    "three": "",
+    "stats-js": "",
+    "mkdirp": "",
+    "electron-prebuilt": "^0.37.0",
+    "electron-packager": "",
+    "fs-extra": "",
+    "node-minify": ""
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "FRAMED-webgl-threejs-framework",
+  "version": "0.1.0",
+  "description": "",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": {
+    "name": "Jocabola"
+  },
+  "readmeFilename": "README.md",
+  "dependencies": {
+  }
+}
