@@ -3,13 +3,16 @@ A boilerplate to easily deploy ThreeJS/WebGL apps for the [FRAMED](https://frm.f
 
 It currently uses Node with budo and browserify for easily coding with classes and testing/running it in your browser during production.
 
-It is currently written in CoffeeScript and will be soon translated into JavaScript ES6.
+~~It is currently written in CoffeeScript and will be soon translated into JavaScript ES6.~~
+It uses ECMAScript 6, also known as ECMAScript 2015, in the current version.
 
 To build Windows executable I am using [Electron](http://electron.atom.io/) which makes it super simple to test your app in Desktop mode and helps encapsulating everything using a modern Chromium build which is very close to latest Google Chrome's builds.
 
 This framework is extensible to any Web based apps for the FRAMED device or Windows. You can use Canvas, CSS, WebAudio, or any web technology supported in modern Chromium builds. You can use Electron's built in NodeJS capabilities to extend browser features.
 
 WINE dependency on OS X and Linux when building on non Windows Systems.
+
+[Changelog](changelog.md)
 
 #### Warning!
 This is still a very early ALPHA under development and testing in collaboration with FRAMED folks. I will be pushing updates as soon as possible. Use & test freely and at your own risk.
@@ -20,27 +23,23 @@ This is still a very early ALPHA under development and testing in collaboration 
 
 `npm install`
 
-**2) To build libs type:**
-
-`npm run-script libs`
-
-**3) To start testing your app in browser type:**
+**2) To start testing your app in browser type:**
 
 `npm start`
 
 This should open your browser automatically.
 
-**4) To test desktop app:**
+**3) To test desktop app:**
 
-`npm run-script run`
+`npm run test`
 
-**5) To package and distribute the Windows EXE:**
+**4) To package and distribute the Windows EXE:**
 
-`npm run-script build`
+`npm run build`
 
 Your app will be saved to a folder named *main-win32-ia32* inside *tmp*. To upload your app at FRAMED you will need to zip *main-win32-ia32* contents (not the folder) and upload the ZIP file.
 
-**6) Setup Your FRAMED App**
+**5) Setup Your FRAMED App**
 
 Edit package.json file inside public folder.
 

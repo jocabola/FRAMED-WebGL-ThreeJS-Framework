@@ -1,16 +1,14 @@
 {
   "name": "FRAMED-webgl-threejs-framework",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "main": "",
   "scripts": {
-    "start": "budo -p 9999 -o --dir public/ src/main.coffee:assets/js/main.js --live -- -t coffeeify -t glslify | garnish",
-    "libs": "mkdirp public/assets/js && browserify src/libs-main.js | uglifyjs -cm > public/assets/js/libs.js",
-    "compile": "mkdirp public/assets/js && browserify -t coffeeify -t glslify src/main.coffee | uglifyjs -cm > public/assets/js/main.js",
-    "deploy": "npm run-script libs && npm run-script compile && node deploy.js",
-    "build": "npm run-script app-libs && npm run-script deploy && node build.js",
-    "run": "npm run-script compile && electron public/main.js",
-    "app-libs": "npm install --prefix public"
+    "start": "budo -p 9999 -o --dir public/ src/main.js:assets/js/main.js --live -- -t [ babelify --presets [ es2015 ] ] -t glslify | garnish",
+    "compile": "mkdirp public/assets/js && browserify -t [ babelify --presets [ es2015 ] ] -t glslify src/main.js | uglifyjs -cm > public/assets/js/main.js",
+    "deploy": "npm run-script compile && node deploy.js",
+    "build": "npm run-script deploy && node build.js",
+    "test": "npm run-script compile && electron public/main.js"
   },
   "repository": {
     "type": "git",
@@ -23,10 +21,12 @@
   "devDependencies": {
     "browserify": "",
     "coffee-script": "",
-    "coffeeify": "",
-    "glslify": "5.1.0",
+    "babelify": "",
+    "babel-preset-es2015": "",
+    "glslify": "^6.0.2",
     "watchify": "",
     "uglifyjs": "",
+    "minifier": "",
     "budo": "",
     "garnish": "",
     "three": "",

@@ -88,4 +88,4 @@ node_modules
 deploy
 tmp
 public/assets/js/main.js
-public/assets/js/libs.js
+package-lock.json
