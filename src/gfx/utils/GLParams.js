@@ -21,12 +21,6 @@ export default class GLParams {
 
 		if ( this.halfFloatRenderTarget == null ) this.halfFloatRenderTarget = false;
 		if ( this.fullFloatRenderTarget == null ) this.fullFloatRenderTarget = false;
-
-		this.crapGPU = this.vendor.indexOf( "Intel" ) > -1 || this.pointSizeMax < 1024;
-		this.realCrapGPU = this.crapGPU && this.maxCubeTextureSize < 8192;
-
-		this.ultraCrapDesktop = this.maxViewportSize < 8192;
-		this.ultraCrapMobile = this.maxViewportSize < 4096;
     }
 
     checkRenderTargetSupport (format, type) {

@@ -1,9 +1,9 @@
-let glsl = require('glslify');
+// let glsl = require('glslify');
 let Stats = require( 'stats-js' );
 
 //import {TweenLite, Expo, Power2} from 'gsap';
 
-import {WebGLRenderer, PerspectiveCamera, Scene, BoxBufferGeometry, Mesh, MeshNormalMaterial} from 'three';
+import {WebGLRenderer, PerspectiveCamera, Scene, BoxBufferGeometry, Mesh, MeshNormalMaterial, RawShaderMaterial, Matrix4} from 'three';
 import GLParams from '../gfx/utils/GLParams'
 import Timer from '../utils/Timer'
 
@@ -11,8 +11,11 @@ export default class App {
     constructor( container ) {
         let w = 1080;
         let h = 1920;
-        this.width = w;
-        this.height = h;
+
+        this.scale = .5;
+        
+        this.width = w * this.scale;
+        this.height = h * this.scale;
         this.ratio = w/h;
 
         console.log( "App init" );
@@ -32,7 +35,7 @@ export default class App {
         let glParams = new GLParams( this.renderer.context );
         console.log( glParams); // dump
 
-        this.renderer.setSize( w, h );
+        this.renderer.setSize( this.width, this.height );
         this.resize();
 
         // add geometry
