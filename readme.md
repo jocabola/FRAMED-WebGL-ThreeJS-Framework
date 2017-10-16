@@ -47,7 +47,13 @@ Edit build.js to add APP icons and amend Electron compiling settings. The App MU
 
 ## Source Code
 
-The source code of the web app is located at *src* folder, while the *index.html* alongside any other CSS and image files you need are located at *public* folder.
+The source code of the web app is located at [src](./src/) folder, while the [index.html](./public/index.html) alongside any other [CSS](./public/assets/css/styles.css) and image files you need are located at [public](./public/) folder.
+
+You only need to edit [App.js](./src/apps/App.js) to create your own App. This file extends [Core.js](./src/apps/Core.js) that contains the setup of the WebGL Renderer, Scene & Camera.
+
+Define your geometry, materials and elements inside `create` function.
+
+Use the `update` function for animations. You can use [this.timer](./src/utils/Timer.js) to fetch current animation time (starts at 0). Use `getTimeMs()` to get time in Milliseconds or `getTimeS()` to get current time in seconds.
 
 ## Other Dependencies / Requirements
 
@@ -58,6 +64,12 @@ You will also need to have [Wine](https://www.winehq.org/) and [XQuartz](https:/
 Once XQuarz is installed you can install wine via homebrew:
 
 `brew install wine`
+
+## Performance Notes
+
+The platform is quite limiting in terms of performance. The FPS was quite disappointing when having just a single spining cube at full HD resolution. Reducing the WebGL canvas size (downsampling) helps a lot. A single spining cube runs at *30 FPS* with a scale factor of *0.5*, meaning that the real resolution is *540 x 960 pixels*. The built-in example with 500 spinning cubes keeps running at *~30 FPS* at this resoluion although seems to go sometimes below that after running for a while.
+
+The given example is not super fancy though. You can probably obtain better results or use more geometry with some advanced graphics programming work like a *GPGPU* pipeline combined with merged or instanced geometries and so on. The intention of this framework is to be as accessible as possible. I will do some further performance tests using such techniques and document it whenever possible.
 
 ## Credits
 
