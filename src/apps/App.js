@@ -5,7 +5,12 @@ import {BoxBufferGeometry, Mesh, MeshNormalMaterial} from 'three';
 export default class App extends Core {
     constructor ( container ) {
         super( container, .5, true ); // container, scale factor (downsample canvas), debug?
+        this.create();
+        this.start();
 
+    }
+
+    create () {
         let N_BOXES = 500;
         let mat = new MeshNormalMaterial();
         let geo = new BoxBufferGeometry(1, 1, 1);
@@ -25,9 +30,6 @@ export default class App extends Core {
             this.boxes.push( box );
             box.visible = false;
         }
-
-        this.start();
-
     }
 
     update() {
