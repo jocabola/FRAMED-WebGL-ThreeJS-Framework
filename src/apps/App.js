@@ -1,116 +1,61 @@
-// let glsl = require('glslify');
-let Stats = require( 'stats-js' );
+import Core from './Core';
+import Random from '../utils/Random';
+import {BoxBufferGeometry, Mesh, MeshNormalMaterial} from 'three';
 
-//import {TweenLite, Expo, Power2} from 'gsap';
+export default class App extends Core {
+    constructor ( container ) {
+        super( container, .5, true ); // container, scale factor (downsample canvas), debug?
 
-import {WebGLRenderer, PerspectiveCamera, Scene, BoxBufferGeometry, Mesh, MeshNormalMaterial, RawShaderMaterial, Matrix4} from 'three';
-import GLParams from '../gfx/utils/GLParams'
-import Timer from '../utils/Timer'
+        let N_BOXES = 500;
+        let mat = new MeshNormalMaterial();
+        let geo = new BoxBufferGeometry(1, 1, 1);
 
-export default class App {
-    constructor( container ) {
-        let w = 1080;
-        let h = 1920;
+        // init Random
+        let rnd = new Random(); // starts with default seed 0
 
-        this.scale = .5;
-        
-        this.width = w * this.scale;
-        this.height = h * this.scale;
-        this.ratio = w/h;
+        this.boxes = [];
 
-        console.log( "App init" );
-
-        this.container = container;
-
-        // -- Renderer ---
-        this.renderer = new WebGLRenderer( { antialias: true, alpha: true } );
-        this.renderer.setClearColor( 0x000000, 1 );
-
-        // camera
-        this.camera = new PerspectiveCamera( 45, w/h, 1, 10000 );
-        this.scene = new Scene();
-        this.scene.add( this.camera );
-
-        // GL Params (can be useful for GPGPU and other stuff)
-        let glParams = new GLParams( this.renderer.context );
-        console.log( glParams); // dump
-
-        this.renderer.setSize( this.width, this.height );
-        this.resize();
-
-        // add geometry
-        this.box = new Mesh( new BoxBufferGeometry(1, 1, 1), new MeshNormalMaterial() );
-        this.box.position.z = -5;
-        this.scene.add( this.box );
-        
-        container.appendChild( this.renderer.domElement );
-
-        // -- settings ---
-        this.debug = true;
-
-        // -- debugg stuff here ---
-
-        let stats = new Stats();
-        stats.domElement.style.position = 'absolute';
-        stats.domElement.style.left = '0';
-        stats.domElement.style.top = '0';
-        if ( this.debug ) document.body.appendChild( stats.domElement );
-        this.stats = stats;
-
-        // -- Launch APP ---
-
-        this.timer = new Timer();
-
-        let animate = () => {
-            requestAnimationFrame( animate );
-            if ( this.debug ) this.stats.begin();
-            this.update();
-            this.render();
-            if ( this.debug ) this.stats.end();
+        for ( let i=0;i<N_BOXES; i++ ) {
+            let box = new Mesh( geo, mat );
+            box.position.set ( rnd.randi(-20,20), rnd.randi(-20,20), rnd.randi(-250, -50));
+            box.startTime = i;
+            box.delay = rnd.randf(0, 1000000);
+            box.speed = { y: rnd.randf( .2, .6 ), z: rnd.randf( .2, .6 ) };
+            this.scene.add( box );
+            this.boxes.push( box );
+            box.visible = false;
         }
 
-        animate();
+        this.start();
 
-        let onResize = (evt) => {
-            this.resize();
-        }
-
-        window.addEventListener( "resize", onResize, false );
     }
-    
-    update () {
-        this.timer.update();
-        this.box.rotation.set( 0, this.timer.getTimeS() * .5, this.timer.getTimeS() * .25 );
+
+    update() {
+        super.update();
+        
+        for ( let box of this.boxes ) {
+            box.visible = this.timer.getTimeMs() > box.startTime;
+            if ( box.visible ) {
+                let t = box.delay + this.timer.getTimeS();
+
+                let s = 1.0;
+                let sd = 500;
+
+                if ( this.timer.getTimeMs() < box.startTime + sd ) {
+                    s = (this.timer.getTimeMs()-box.startTime)/sd;
+                }
+
+                box.scale.set( s, s, s );
+
+                let w = box.position.z < -100 ? 50 : 20; //box.position.z * .4;
+                box.position.set( w * Math.sin( t * box.speed.y * .01 ), w * Math.cos( t * box.speed.z * .01 ), box.position.z );
+
+                box.rotation.set( 0, t * box.speed.y, t * box.speed.z );
+            }
+        }
     }
 
     render () {
-        this.renderer.clear();
-        this.renderer.render( this.scene, this.camera );
-    }
-
-    pause () {
-        this.paused = true;
-    }
-
-    play () {
-        this.paused = false;
-    }
-
-    resize () {
-        let w = this.width;
-        let h = this.height;
-
-        let ww = window.innerWidth;
-        let wh = window.innerHeight;
-        
-        let vw = ww;
-        let vh = ww / this.ratio;
-        if (vh > wh) {
-            vh = wh;
-            vw = vh * this.ratio;
-        }
-        
-        this.renderer.domElement.style.width = `${vw}px`;
-        this.renderer.domElement.style.height = `${vh}px`;
+        super.render();
     }
 }
