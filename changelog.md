@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0
+
+#### Modified
+* Further Cleanup
+* Encapsulated basic stuff into Core.js so App.js is cleaner
+* Updated example + FRAMED device testing
+
 ## 0.2.0
 
 #### Modified
