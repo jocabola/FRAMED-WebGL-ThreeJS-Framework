@@ -1,5 +1,5 @@
 {
-  "name": "FRAMED-webgl-threejs-framework",
+  "name": "FRAMED-webgl-regl-framework",
   "version": "0.3.0",
   "description": "",
   "main": "",
@@ -29,7 +29,8 @@
     "minifier": "^0.8.1",
     "budo": "^10.0.4",
     "garnish": "^5.2.0",
-    "three": "^0.87.1",
+    "regl": "^1.3.0",
+    "gl-mat4": "^1.1.4",
     "stats-js": "^1.0.0-alpha1",
     "mkdirp": "^0.5.1",
     "electron-prebuilt": "^0.37.0",

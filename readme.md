@@ -1,5 +1,5 @@
-# FRAMED WebGL + Threejs framework
-A boilerplate to easily deploy ThreeJS/WebGL apps for the [FRAMED](https://frm.fm/) device as Windows EXE apps.
+# FRAMED WebGL + regl framework
+A boilerplate to easily deploy regl/WebGL apps for the [FRAMED](https://frm.fm/) device as Windows EXE apps.
 
 It currently uses Node with budo and browserify for easily coding with classes and testing/running it in your browser during production.
 
@@ -73,7 +73,7 @@ The given example is not super fancy though. You can probably obtain better resu
 
 ## Credits
 
-This framework uses a bunch of libraries and NPM packages alongside [Electron](https://github.com/electron) and [ThreeJS](https://github.com/mrdoob/three.js/).
+This framework uses a bunch of libraries and NPM packages alongside [Electron](https://github.com/electron) and [regl](http://regl.party/).
 
 
 ## License

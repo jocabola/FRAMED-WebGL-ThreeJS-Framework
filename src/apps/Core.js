@@ -1,6 +1,6 @@
 let Stats = require( 'stats-js' );
 
-import {WebGLRenderer, PerspectiveCamera, Scene} from 'three';
+import regl from 'regl';
 import GLParams from '../gfx/utils/GLParams'
 import Timer from '../utils/Timer'
 
@@ -19,23 +19,24 @@ export default class Core {
 
         this.container = container;
 
-        // -- Renderer ---
-        this.renderer = new WebGLRenderer( { antialias: true, alpha: true } );
-        this.renderer.setClearColor( 0x000000, 1 );
-
-        // camera
-        this.camera = new PerspectiveCamera( 45, w/h, 1, 10000 );
-        this.scene = new Scene();
-        this.scene.add( this.camera );
+        this.regl = regl( {
+            container: container
+            // extensions: ['webgl_draw_buffers', 'oes_texture_float']
+        } );
+        this.viewport = {
+            x: 0,
+            y: 0,
+            width: this.width,
+            height: this.height
+        }
 
         // GL Params (can be useful for GPGPU and other stuff)
-        this.glParams = new GLParams( this.renderer.context );
+        this.glParams = new GLParams( this.regl._gl );
         console.log( this.glParams); // dump
 
-        this.renderer.setSize( this.width, this.height );
+        this.canvas = container.children[0];
+
         this.resize();
-        
-        container.appendChild( this.renderer.domElement );
 
         // -- settings ---
         this.debug = debug;
@@ -53,7 +54,7 @@ export default class Core {
             this.resize();
         }
 
-        window.addEventListener( "resize", onResize, false );
+        // window.addEventListener( "resize", onResize, false );
     }
 
     start () {
@@ -76,8 +77,10 @@ export default class Core {
     }
 
     render () {
-        this.renderer.clear();
-        this.renderer.render( this.scene, this.camera );
+        this.regl.clear({
+            color: [0, 0, 0, 1],
+            depth: 1
+        });
     }
 
     pause () {
@@ -102,7 +105,9 @@ export default class Core {
             vw = vh * this.ratio;
         }
         
-        this.renderer.domElement.style.width = `${vw}px`;
-        this.renderer.domElement.style.height = `${vh}px`;
+        this.canvas.width = w;
+        this.canvas.height = h;
+        this.canvas.style.width = `${vw}px`;
+        this.canvas.style.height = `${vh}px`;
     }
 }
